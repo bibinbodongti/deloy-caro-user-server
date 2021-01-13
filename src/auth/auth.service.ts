@@ -28,9 +28,7 @@ export class AuthService {
     const user = await this.usersService.findOneByUsername(email);
     if (
       user &&
-      bcrypt.compareSync(password, user.password) &&
-      user.role === userRoles.user &&
-      user.isActive === true && user.status===true
+      bcrypt.compareSync(password, user.password) && user.role === userRoles.user
     ) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
@@ -40,6 +38,13 @@ export class AuthService {
   }
 
   async login(user: UserData) {
+    console.log(user);
+    if(user.isActive === false){
+      return {err:'Tài khoản của bạn chưa được kích hoạt. Vui lòng kiểm tra email để kích hoạt tài khoản của bạn'};
+    }
+    if(user.status===false){
+      return {err:'Tài khoản của bạn đã bị khóa'};
+    }
     const payload = { username: user.username, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
@@ -121,11 +126,11 @@ export class AuthService {
         };
       const token = this.jwtService.sign({ sub: user.id });
       const html =
-        '<p>Bạn vừa thực hiện yêu cầu reset password tại Advanced caro của Khoa Huy Hưng, nếu đó là bạn : <p><li><a href="https://caro-advanced.herokuapp.com/resetpassword/' +
+        '<p>Bạn vừa thực hiện yêu cầu reset password tại Advanced caro của Khoa Huy Hưng, nếu đó là bạn : <p><li><a href="http://localhost:3001/resetpassword/' +
         token +
-        '"><b>Nhấn vào đây để để tìm lại mật khẩu</b></a></li>';
+        '"><b>Nhấn vào đây để lấy lại mật khẩu</b></a></li>';
       // Vì mail api free nên vui lòng k test với tần suất cao để k bị gg khóa tài khoản hoặc mail bị chuyển vào quảng cáo, mất công tạo lại
-      //return "Truy cập https://caro-advanced.herokuapp.com/resetpassword/"+token+ ' để tìm lại mật khẩu'; //comment dòng này để test
+      //return "Truy cập http://localhost:3001/resetpassword/"+token+ ' để tìm lại mật khẩu'; //comment dòng này để test
       this.mailService.SendMail(
         email,
         '[Advanced Caro] - Xác nhận lấy lại mật khẩu',
