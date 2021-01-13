@@ -1,0 +1,10 @@
+{
+  "type": "mysql",
+  "host": "advancedcaro.mysql.database.azure.com",
+  "port": 3306,
+  "username": "caroadmin@advancedcaro",
+  "password": "Kaitokid1412",
+  "database": "advancedcaro",
+  "entities": ["dist/**/*.entity{.ts,.js}"]
+}
+
