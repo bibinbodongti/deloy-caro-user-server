@@ -50,11 +50,11 @@ export class UsersService {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const savedUser = await this.usersRepository.save(newUser);
     const html =
-      '<p>Bạn vừa thực hiện yêu cầu đăng ký tài khoản tại Advanced caro của Khoa Huy Hưng, nếu đó là bạn : <p><li><a href="https://caro-advanced.herokuapp.com/active/' +
+      '<p>Bạn vừa thực hiện yêu cầu đăng ký tài khoản tại Advanced caro của Khoa Huy Hưng, nếu đó là bạn : <p><li><a href="http://localhost:3001/active/' +
       token +
       '"><b>Nhấn vào đây để kích hoạt tài khoản</b></a></li>';
     // Vì mail api free nên vui lòng k test với tần suất cao để k bị gg khóa tài khoản hoặc mail bị chuyển vào quảng cáo, mất công tạo lại
-    //return "Đăng ký thành công. Truy cập https://caro-advanced.herokuapp.com/active/" + token + ' kích hoạt tài khoản'; //comment dòng này để test
+    //return "Đăng ký thành công. Truy cập http://localhost:3000/active/" + token + ' kích hoạt tài khoản'; //comment dòng này để test
     this.mailService.SendMail(
       email,
       '[Advanced Caro] - Kích hoạt tài khoản',

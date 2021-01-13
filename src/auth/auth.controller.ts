@@ -1,4 +1,4 @@
-	import {
+import {
   Body,
   Controller,
   HttpCode,
@@ -15,16 +15,18 @@ import { UserData } from '../users/users.interface';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private usersService: UsersService,
+    private readonly jwtService: JwtService,
   ) {}
 
   @Post('signup')
-  signup(@Body() user: CreateUserDto): Promise<UserData> {
+  async signup(@Body() user: CreateUserDto): Promise<UserData> {
     return this.usersService.create(user);
   }
 
@@ -37,6 +39,22 @@ export class AuthController {
     @Body() body: { access_token: string; userID: string },
   ) {
     return this.authService.loginWithFacebook(body.access_token, body.userID);
+  }
+  @Post('forgetpassword')
+  async ForgetPassword(@Body() body: { email: string }) {
+    return this.authService.FindAccount(body.email);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('checktokenresetpassword')
+  async checkTokenResetPassword(@Request() req) {
+    return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('resetpassword')
+  async ResetPassword(@Body() body: { newPassword: string }, @Request() req) {
+    return await this.authService.ResetPassword(req.user.id, body.newPassword);
   }
 
   @UseGuards(LocalAuthGuard)
