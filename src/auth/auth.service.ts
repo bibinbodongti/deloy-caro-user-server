@@ -121,11 +121,11 @@ export class AuthService {
         };
       const token = this.jwtService.sign({ sub: user.id });
       const html =
-        '<p>Bạn vừa thực hiện yêu cầu reset password tại Advanced caro của Khoa Huy Hưng, nếu đó là bạn : <p><li><a href="http://localhost:3001/resetpassword/' +
+        '<p>Bạn vừa thực hiện yêu cầu reset password tại Advanced caro của Khoa Huy Hưng, nếu đó là bạn : <p><li><a href="https://caro-advanced.herokuapp.com/resetpassword/' +
         token +
-        '"><b>Nhấn vào đây để lấy lại mật khẩu</b></a></li>';
+        '"><b>Nhấn vào đây để để tìm lại mật khẩu</b></a></li>';
       // Vì mail api free nên vui lòng k test với tần suất cao để k bị gg khóa tài khoản hoặc mail bị chuyển vào quảng cáo, mất công tạo lại
-      //return "Truy cập http://localhost:3001/resetpassword/"+token+ ' để tìm lại mật khẩu'; //comment dòng này để test
+      //return "Truy cập https://caro-advanced.herokuapp.com/resetpassword/"+token+ ' để tìm lại mật khẩu'; //comment dòng này để test
       this.mailService.SendMail(
         email,
         '[Advanced Caro] - Xác nhận lấy lại mật khẩu',
